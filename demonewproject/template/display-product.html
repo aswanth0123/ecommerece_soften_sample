@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  {% extends "header.html" %}
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body>
+<ul>
+{% block nav %}
+<li class="nav-item"><a class="nav-link" href="../uhome">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="../book_details">Booking Details</a></li>
+<li class="nav-item"><a class="nav-link" href="../profile">Profile</a></li>
+    <li class="nav-item "><a href="">
+    <i class="fa fa-cart-plus fa-2x"></i>
+    <span class="badge badge-pill badge-danger">{% if data %}{{ data.count }}{% else %}0{% endif %}</span>
+</a></li>
+<li class="nav-item"><a class="nav-link" href="../user_logout">Logout</a></li>
+{% endblock nav %}
+</ul>
+
+{% block body %}
+
+{% if messages %}
+<div class="container" >
+<div class="alert alert-success alert-dismissible messages">
+    {% for message in messages %}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+     {{message}}
+  </div>
+     {% endfor %}
+</div>
+{% endif %}
+
+
+
+
+<!--<div class="all-page-title page-breadcrumb">-->
+<!--		<div class="container text-center">-->
+<!--			<div class="row mt-3">-->
+<!--				<div class="col-lg-12">-->
+<!--					<h1>{{i.user_details.username}}</h1>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+{% for i in data %}
+<!--<div ng-app="" ng-init="a={{i.product_details.price}};qty=0">-->
+<!--	<h5>Product Stock</h5><input type="number" ng-model="qty">-->
+<!--	<h5>Total</h5><input type="text" ng-model="qty*a" readonly>-->
+
+
+<div class="row float-left col-lg-3" style="padding:50px;">
+        <div class="container col-lg-12 mh-100 bg-light" style="display:flex;margin-left:40px;padding:20px;" >
+        <div class="img-wrapper">
+		<img src="{{i.product_details.image.url}}" height="150" width="150"><br><br>
+
+            <h5 style="text-align:center;">{{i.product_details.pname}}</h5>
+        <h5 style="text-align:center;" >Rs.{{i.product_details.price}}</h5>
+<!--            <div ng-app="" ng-init="a={{i.product_details.price}};qty=0;">-->
+<!--                <h5>Total <input type="text" ng-model="qty"  size="3" readonly>{{total}}</h5>-->
+<!--            </div>-->
+<h6>available stock:{{i.product_details.quantity}}</h6>
+<p>{{i.quantity}}</p>
+<form method="post" action="{% url 'decrement_quantity' cart_id=i.pk %}" >
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">-</button>
+</form>
+
+<form method="post" action="{% url 'increment_quantity' cart_id=i.pk %}" style="margin-left:60px;margin-top:-38px;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline-primary">+</button>
+</form>
+
+
+            <a href="" class="btn btn-primary mt-2">Buy Now</a>
+           <a href="../remove/{{i.pk}}"><button type="button" class="btn btn-primary mt-2" >remove</button></a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<div class="row col-6">
+    <div class="ml-5 p-5 bg-info" style="box-shadow: 10px black;">
+        Total items:{% if data %}{{ data.count }}{% else %}0{% endif %}
+        <br><br>
+        Total Price:{{total}}
+        <br><br>
+        <a href="../booking" class="btn btn-danger">place order</a>
+    </div>
+</div>
+
+
+{% endblock body %}
+
+</body>
+</html>

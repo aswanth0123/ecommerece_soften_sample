@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends "header.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+{% block nav %}
+<li class="nav-item"><a class="nav-link" href="add_product">Add Product</a></li>
+<li class="nav-item"><a class="nav-link" href="view-user">View User</a></li>
+<li class="nav-item"><a class="nav-link" href="product_details">Product Details</a></li>
+<li class="nav-item"><a class="nav-link" href="">Logout</a></li>
+{% endblock nav %}
+</ul>
+
+{% block body %}
+
+<div class="map-full">
+	<div class="contact-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 mt-4">
+					<div class="heading-title text-center">
+						<h2>Product Details</h2>
+					</div>
+				</div>
+			</div>
+        </div>
+        {% if messages %}
+			<div class="container">
+			<div class="alert alert-success alert-dismissible messages">
+    		{% for message in messages %}
+    		<button type="button" class="close" data-dismiss="alert">&times;</button>
+     			{{message}}
+  			</div>
+     		{% endfor %}
+			</div>
+			{% endif %}
+
+{% for i in data %}
+    <div class="container carousel-inner" style="display:flex;float:left;">
+
+      <div class="carousel-item active row" >
+        <div class="col-xs-3 col-sm-3 col-md-3">
+          <div class="card" style="width: 18rem;">
+              <form action="" method="post" enctype="multipart/form-data" class="form-group">
+                  {% csrf_token %}
+            <input type="file" name="eimg"><img src='{{i.image.url}}' class="card-img-top" alt="img">
+            <div class="card-body text-center">
+                <h3 class="card-title"><input type="text" name="ename" value="{{i.pname}}"></h3>
+                <h4 class="card-title"><input type="text" name="eprice" value="{{i.price}}"></h4>
+                <h4 class="card-title"><input type="text" name="equantity" value="{{i.quantity}}"></h4>
+                <input type="submit" class="btn btn-primary" value="Edit">
+                <a href="#" class="btn btn-primary">Delete</a>
+            </div>
+                      </form>
+          </div>
+       </div>
+{% endfor %}
+</div></div></div></div>
+
+
+
+{% endblock body %}
+</body>
+</html>

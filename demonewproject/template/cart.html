@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "header.html" %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+{% block nav %}
+<li class="nav-item"><a class="nav-link" href="../uhome">Home</a></li>
+
+<li class="nav-item"><a class="nav-link" href="../book_details">Booking Details</a></li>
+    <li class="nav-item"><a class="nav-link" href="profile">Profile</a></li>
+        <li class="nav-item "><a href="cart">
+    <i class="fa fa-shopping-cart fa-2x"></i>
+    <span class="badge badge-pill badge-danger">{% if d1 %}{{ d1.count }}{% else %}0{% endif %}</span>
+</a></li>
+<li class="nav-item"><a class="nav-link" href="user_logout">Logout</a></li>
+{% endblock nav %}
+</ul>
+
+{% block body %}
+
+{% if messages %}
+<div class="container" >
+<div class="alert alert-success alert-dismissible messages">
+    {% for message in messages %}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+     {{message}}
+  </div>
+     {% endfor %}
+</div>
+{% endif %}
+
+
+{{product}}
+{{category_name}}
+
+
+{% endblock body %}
+
+</body>
+</html>

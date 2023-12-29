@@ -38,7 +38,9 @@ urlpatterns = [
     path('addcart/<int:pid>',views.addcart),
     path('cart/increment/<int:cart_id>/', views.increment_quantity, name='increment_quantity'),
     path('cart/decrement/<int:cart_id>/', views.decrement_quantity, name='decrement_quantity'),
-    path('remove/<int:id>',views.remove_cart)
+    path('remove/<int:id>',views.remove_cart),
+    path('single_booking/<int:id>',views.single_booking),
+    path('book_details',views.booking_dtls)
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

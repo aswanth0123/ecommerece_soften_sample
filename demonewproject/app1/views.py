@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
+from django.http import HttpResponse
+
 # Create your views here.
 from .models import *
 def header(request):
@@ -135,9 +137,7 @@ def display_product(request):
         qty=1
         total=0
         for i in b:
-            print(i.product_details.price)
             total+=i.product_details.price*i.quantity
-            print(total)
         return render(request,'display-product.html',{'data':b,'total':total})
     return redirect(login)
 
@@ -148,6 +148,8 @@ def increment_quantity(request, cart_id):
     if cart_item.product_details.quantity > cart_item.quantity:
         cart_item.quantity += 1
         cart_item.save()
+        cart_item.product_details.quantity-=cart_item.quantity
+
     return redirect(display_product)
 
 def decrement_quantity(request, cart_id):
@@ -155,6 +157,7 @@ def decrement_quantity(request, cart_id):
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
+        cart_item.product_details.quantity-=cart_item.quantity
     return redirect(display_product)
 
 def logout(request):
@@ -169,3 +172,29 @@ def remove_cart(req,id):
     data=Cart.objects.get(pk=id)
     data.delete()
     return redirect(display_product)
+
+
+def single_booking(re,id):
+    item=product.objects.get(pk=id)
+    if re.method=='POST':
+        qty=int(re.POST['qty'])
+        t_price=re.POST['total_price']
+        item.quantity-=qty
+        item.save()
+        import datetime
+        a=datetime.datetime.now().strftime("%Y-%m-%d")
+        print(a)
+        user=register.objects.get(username=re.session['id'])
+
+        book=bookings.objects.create(date=a,user_details=user,item_details=item)
+        book.save()
+        return redirect(user_home)
+    return render(re,'booking_form.html',{'item':item})
+
+def booking_dtls(re):
+    user=register.objects.get(username=re.session['id'])
+    book=bookings.objects.filter(user_details=user)
+    return render(re,'bookings.html',{'bookings':book})
+    
+
+

@@ -22,8 +22,10 @@ class Cart(models.Model):
     quantity=models.IntegerField(default=1)
 
 class bookings(models.Model):
-    user_details=models.ForeignKey(product,on_delete=models.CASCADE)
-    item_details=models.ForeignKey(Cart,on_delete=models.CASCADE)
+    user_details=models.ForeignKey(register,on_delete=models.CASCADE)
+    item_details=models.ForeignKey(product,on_delete=models.CASCADE)
     date=models.DateField()
+    quantity=models.IntegerField()
+    total_price=models.IntegerField()
     
 

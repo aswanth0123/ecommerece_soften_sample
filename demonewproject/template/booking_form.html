@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% extends "header.html" %}
+
+</head>
+<body>
+    <ul>
+        {% block nav %}
+        <li class="nav-item"><a class="nav-link" href="../uhome">Home</a></li>
+        
+        <li class="nav-item"><a class="nav-link" href="../book_details">Booking Details</a></li>
+            <li class="nav-item"><a class="nav-link" href="profile">Profile</a></li>
+                <li class="nav-item "><a href="cart">
+            <i class="fa fa-shopping-cart fa-2x"></i>
+            <span class="badge badge-pill badge-danger">{% if d1 %}{{ d1.count }}{% else %}0{% endif %}</span>
+        </a></li>
+        <li class="nav-item"><a class="nav-link" href="user_logout">Logout</a></li>
+        {% endblock nav %}
+        </ul>
+
+        
+        {% block body %}
+
+
+
+        <div class="row float-left col-lg-3" style="padding:50px;">
+            <div class="container col-lg-12 mh-100 bg-light" style="display:flex;margin-left:40px;padding:20px;" >
+            <div class="img-wrapper">
+            <img src="{{item.image.url}}" height="150" width="150"><br><br>
+    
+                <h5 style="text-align:center;">{{item.pname}}</h5>
+            <h5 style="text-align:center;" >Rs.{{item.price}}</h5>
+    <!--            <div ng-app="" ng-init="a={{i.product_details.price}};qty=0;">-->
+    <!--                <h5>Total <input type="text" ng-model="qty"  size="3" readonly>{{total}}</h5>-->
+    <!--            </div>-->
+    <!-- <h6>available stock:{{i.product_details.quantity}}</h6> -->
+        <input type="number" value="{{item.quantity}}" id="a3" hidden>
+        <input type="number" value="{{item.price}}" id="price" hidden>
+
+        <script>
+            function abc(){
+                var b=parseInt(document.getElementById("a3").value)
+                var a=parseInt(document.getElementById('a2').value )
+                var price=parseInt(document.getElementById('price').value )
+
+                if(a<b){
+                a=a+1
+                document.getElementById("a2").value=a
+                document.getElementById("a1").innerHTML=a
+                document.getElementById("a4").value=a*price
+
+                document.getElementById("a5").innerHTML=a*price
+
+                }
+                else{
+                    alert('only left'+b+'qty')
+                }
+
+
+
+            }
+            function abc1(){
+                var a=parseInt(document.getElementById('a2').value )
+                if (a>=2){
+                var price=parseInt(document.getElementById('price').value )
+
+                a=a-1
+                document.getElementById("a2").value=a
+                document.getElementById("a1").innerHTML=a
+                document.getElementById("a4").value=a*price
+
+                document.getElementById("a5").innerHTML=a*price
+                }
+                
+
+
+
+            }
+        </script>
+                <h6 id="a1" class="text-center">1</h6>
+
+            <p class="btn btn-outline-primary" onclick="abc1()">-</p>
+            <p class="btn btn-outline-primary" onclick="abc()">+</p>
+            <br>
+            total price:<span id="a5">{{item.price}} </span> 
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+        <input type="number" id="a2" value="1" hidden name="qty">
+        <input type="number" id="a4" hidden value="{{item.price}}" name="total_price">
+        <input type="submit" class="btn btn-primary mt-2" value="submit">
+        </form>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- <form action="" method="post">
+            <input type="text" name="" id="">
+            <input type="text" name="" id="">
+            <input type="text" name="" id="">
+            <input type="text" name="" id="">
+
+        </form> -->
+        {% endblock body %}
+
+</body>
+</html>

@@ -6,7 +6,7 @@ class register(models.Model):
     email=models.EmailField()
     dob=models.DateField()
     address=models.CharField(max_length=50)
-    username=models.CharField(max_length=10)
+    username=models.CharField(max_length=10,unique=True)
     password=models.CharField(max_length=10)
 
 class product(models.Model):
@@ -20,6 +20,7 @@ class Cart(models.Model):
     product_details=models.ForeignKey(product,on_delete=models.CASCADE)
     user_details=models.ForeignKey(register,on_delete=models.CASCADE)
     quantity=models.IntegerField(default=1)
+    total_price=models.IntegerField()
 
 class bookings(models.Model):
     user_details=models.ForeignKey(register,on_delete=models.CASCADE)

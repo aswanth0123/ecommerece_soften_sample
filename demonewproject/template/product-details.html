@@ -22,15 +22,15 @@
 <body>
 <ul>
 {% block nav %}
-<li class="nav-item"><a class="nav-link" href="add_product">Add Product</a></li>
-<li class="nav-item"><a class="nav-link" href="view-user">View User</a></li>
-<li class="nav-item"><a class="nav-link" href="product_details">Product Details</a></li>
-<li class="nav-item"><a class="nav-link" href="logout_admin">Logout</a></li>
+<li class="nav-item"><a class="nav-link" href="../add_product">Add Product</a></li>
+<li class="nav-item"><a class="nav-link" href="../view-user">View User</a></li>
+<li class="nav-item"><a class="nav-link" href="../product_details">Product Details</a></li>
+<li class="nav-item"><a class="nav-link" href="../logout_admin">Logout</a></li>
 {% endblock nav %}
 </ul>
 
 {% block body %}
-
+{% if data %}
 <div class="map-full">
 	<div class="contact-box">
 		<div class="container">
@@ -54,16 +54,15 @@
     </thead>
     <tbody>
      {% for i in data %}
-	 <form id="myForm" action="" method="post">
-			{% csrf_token %}
+	
     <tr>
 
         <td><img src="{{i.image.url}}" height="150" width="150"></td>
-        <td>{{i.pname}}<input type="text" value="{{i.pname}}" style="display:none;" id="d1"></td>
-        <td>{{i.price}}<input type="text" value="{{i.price}}" style="display:none;" id="d2"></td>
-        <td >{{i.quantity}}<input type="text" value="{{i.quantity}}" style="display:none;" id="d3"></td>
-		<td><button type="button" class="btn btn-primary" id="show">Edit <i class="fas fa-pencil"></i></button>
-			<button type="button" class="btn btn-primary">Delete <i class="fas fa-pencil"></i></button>
+        <td>{{i.pname}}</td>
+        <td>{{i.price}}</td>
+        <td >{{i.quantity}}</td>
+		<td><a href="../update_product/{{i.pk}}" class="btn btn-primary" id="show">Edit </a>
+			<a href="../delete_item/{{i.pk}}" class="btn btn-primary">Delete</i></a>
 		</td>
 
 	</tr>
@@ -79,15 +78,67 @@
 
 </div></div>
 
-<script>
-  $(document).ready(function() {
-    $("#show").click(function() {
-      $("#d1").show();
-      $("#d2").show();
-      $("#d3").show();
-    });
-  });
-</script>
+{% else %}
+
+
+
+<div class="map-full">
+	<div class="contact-box">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 mt-4">
+					<div class="heading-title text-center">
+						<h2>Update {{item.pname}}</h2>
+					</div>
+				</div>
+			</div>
+        </div>
+        <div class="container">
+  <table class="table table-stripped mt-5">
+    <thead>
+      <tr>
+        <th>Product Image</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+	
+
+
+  <tr>
+    <form id="myForm" action="../update_product/{{item.pk}}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <th><img src="{{item.image.url}}" height="150" width="150"><input type="file" name="image"></th>
+      <th>    <input type="text" value="{{item.pname}}"  name="name">
+      </th>
+      <th>    <input type="text" value="{{item.price}}" id="d1" name="price">
+      </th>
+      <th>    <input type="text" value="{{item.quantity}}" id="d3" name="quantity">
+      </th>
+      <th>    <input type="submit">
+      </th>
+    </form>
+  </tr>
+
+
+
+		 </form>
+    </tbody>
+  </table>
+
+</div>
+
+
+
+
+</div></div>
+
+
+
+{% endif %}
+
 
 
 {% endblock body %}

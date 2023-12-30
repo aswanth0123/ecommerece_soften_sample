@@ -124,7 +124,7 @@ def addcart(request, pid):
         print(u)
         item=product.objects.get(pk=pid)
         print(item)
-        data=Cart(product_details=item,user_details=u)
+        data=Cart(product_details=item,user_details=u,total_price=item.price)
         data.save()
         messages.success(request,'Cart added successfully')
         return redirect(display_product)
@@ -145,10 +145,12 @@ def display_product(request):
 def increment_quantity(request, cart_id):
     
     cart_item = Cart.objects.get(pk=cart_id)
-    if cart_item.product_details.quantity > cart_item.quantity:
+    if cart_item.product_details.quantity > 1:
         cart_item.quantity += 1
         cart_item.save()
-        cart_item.product_details.quantity-=cart_item.quantity
+        cart_item.total_price=cart_item.quantity*cart_item.product_details.price
+        cart_item.save()
+   
 
     return redirect(display_product)
 
@@ -157,7 +159,6 @@ def decrement_quantity(request, cart_id):
     if cart_item.quantity > 1:
         cart_item.quantity -= 1
         cart_item.save()
-        cart_item.product_details.quantity-=cart_item.quantity
     return redirect(display_product)
 
 def logout(request):
@@ -185,8 +186,7 @@ def single_booking(re,id):
         a=datetime.datetime.now().strftime("%Y-%m-%d")
         print(a)
         user=register.objects.get(username=re.session['id'])
-
-        book=bookings.objects.create(date=a,user_details=user,item_details=item)
+        book=bookings.objects.create(date=a,user_details=user,item_details=item,quantity=qty,total_price=t_price)
         book.save()
         return redirect(user_home)
     return render(re,'booking_form.html',{'item':item})
@@ -195,6 +195,45 @@ def booking_dtls(re):
     user=register.objects.get(username=re.session['id'])
     book=bookings.objects.filter(user_details=user)
     return render(re,'bookings.html',{'bookings':book})
+
+def multiple_booking(re):
+    user=register.objects.get(username=re.session['id'])
+    items=Cart.objects.filter(user_details=user)
+
+    return render(re,'booking_multiple.html',{'items':items})
+def buynow(req):
+    user=register.objects.get(username=req.session['id'])
+    items=Cart.objects.filter(user_details=user)
+    import datetime
+    a=datetime.datetime.now().strftime("%Y-%m-%d")
+    for i in items:
+        item=product.objects.get(pk=i.product_details.pk)
+        print(item.pname)
+        data=bookings.objects.create(user_details=user,item_details=item,quantity=i.quantity,total_price=i.total_price,date=a)
+        data.save()
+    messages.success(req,'all cart items are booked')
+    return redirect(user_home)
+
+
+def update_product(req,id):
+    item=product.objects.get(pk=id)
+    if req.method=='POST':
+        item.pname=req.POST['name']
+        item.price=req.POST['price']
+        item.quantity=req.POST['quantity']
+        try:
+            item.image=re.FILES['image']
+            import os
+            os.remove
+            item.save()
+        except:
+            item.save()
+        return redirect(product_details)
+    return render(req,'product-details.html',{'item':item})
     
+def delete_item(req,id):
+    item=product.objects.get(pk=id)
+    item.delete()
+    return redirect(product_details)
 
 

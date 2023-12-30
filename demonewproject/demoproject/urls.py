@@ -40,7 +40,12 @@ urlpatterns = [
     path('cart/decrement/<int:cart_id>/', views.decrement_quantity, name='decrement_quantity'),
     path('remove/<int:id>',views.remove_cart),
     path('single_booking/<int:id>',views.single_booking),
-    path('book_details',views.booking_dtls)
+    path('book_details',views.booking_dtls),
+    path('multiple_booking',views.multiple_booking),
+    path('buynow',views.buynow),
+    path('update_product/<int:id>',views.update_product),    
+    path('delete_item/<int:id>',views.delete_item),
+
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

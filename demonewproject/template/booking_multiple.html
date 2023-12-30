@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% extends "header.html" %}
+
+</head>
+<body>
+    <ul>
+        {% block nav %}
+        <li class="nav-item"><a class="nav-link" href="../uhome">Home</a></li>
+        
+        <li class="nav-item"><a class="nav-link" href="../book_details">Booking Details</a></li>
+            <li class="nav-item"><a class="nav-link" href="profile">Profile</a></li>
+                <li class="nav-item "><a href="cart">
+            <i class="fa fa-shopping-cart fa-2x"></i>
+            <span class="badge badge-pill badge-danger">{% if d1 %}{{ d1.count }}{% else %}0{% endif %}</span>
+        </a></li>
+        <li class="nav-item"><a class="nav-link" href="user_logout">Logout</a></li>
+        {% endblock nav %}
+        </ul>
+
+        
+        {% block body %}
+
+
+<div class="container">
+       <table class="table table-sm m-5">
+        {% for i in items %}
+        <tr>
+            <th><img src="{{i.product_details.image.url}}" width="150px" height="150px" alt=""></th>
+            <th>{{i.product_details.price}}</th>
+            <th>{{i.quantity}}</th>
+     
+                <th>{{ i.total_price }}</th>
+        </tr>
+        {% endfor %}
+       </table>
+        <a href="../buynow" >Buy Now</a>
+    </div>
+
+        {% endblock body %}
+
+</body>
+</html>
